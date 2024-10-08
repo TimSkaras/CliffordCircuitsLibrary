@@ -4,10 +4,9 @@ Welcome to the Clifford Circuits Library! This library provides classes and meth
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Features](#features)
-- [Installation and Setup](#installation-and-setup)
-- [Usage](#usage)
-- [Contributing](#contributing)
+- [Installation](#installation)
+- [Getting Started](#getting-started)
+- [Examples](#examples)
 - [License](#license)
 
 ## Introduction
@@ -21,21 +20,25 @@ This library provides a framework for simulating quantum circuits that are compo
 - StabilizerState Class (`ccl.StabilizerState`): Represents stabilizer states and supports evolution under Clifford operations and measurements.
 - CliffordCircuit Class (`ccl.CliffordCircuit`): Represents a circuit composed of Clifford gates and provides methods to build and compile Clifford operations.
 
-## Features
+## Installation
 
-Some key features of this project include...
+## Getting Started
 
-## Installation and Setup
+### Creating Pauli Objects
 
-To set up this project, follow these steps...
+### Creating Clifford Objects
 
-## Usage
+### Creating Stabilizer States
 
-Here's how you can use the project...
+## Examples
 
-## Contributing
+### Evolving with Random Cliffords
 
-If you would like to contribute to this project...
+### Measuring a Stabilizer State
+
+### Getting Probabilities of a Stabilizer State
+
+### Building a Clifford Circuit
 
 ## License
 
