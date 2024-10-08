@@ -26,7 +26,7 @@ To use the Clifford Circuits Library, you need to include the `ccl.py` file in y
 
 ### Option 1: Place `ccl.py` in Your Project Directory
 
-Copy the `ccl.py file` into the same directory as your Python script. You can then import the ccl module directly.
+Copy the `ccl.py` file into the same directory as your Python script. You can then import the ccl module directly.
 
 ```python
 import ccl
@@ -39,6 +39,13 @@ If you prefer to keep `ccl.py` in a separate directory, you can modify the `PYTH
 ```cmd
 set PYTHONPATH=%PYTHONPATH%;C:\path\to\CliffordCircuitsLibrary
 ```
+
+Then you can import ccl as you would a normal python package
+
+```python
+import ccl
+```
+
 
 ## Getting Started
 
