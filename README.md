@@ -12,7 +12,14 @@ Welcome to the Clifford Circuits Library! This library provides classes and meth
 
 ## Introduction
 
-This is the introduction to the project.
+This library provides a framework for simulating quantum circuits that are composed of Clifford gates. It includes classes to represent Pauli operators, Clifford operations, and stabilizer states. The stabilizer formalism allows efficient simulation of a subset of quantum computations that include state preparation, Clifford gates, and Pauli measurements.
+
+### Key Components:
+
+- Pauli Class (`ccl.Pauli`): Represents Pauli operators and supports operations like multiplication and commutation checks.
+- Clifford Class (`ccl.Clifford`): Represents Clifford operations using symplectic matrices.
+- StabilizerState Class (`ccl.StabilizerState`): Represents stabilizer states and supports evolution under Clifford operations and measurements.
+- CliffordCircuit Class (`ccl.CliffordCircuit`): Represents a circuit composed of Clifford gates and provides methods to build and compile Clifford operations.
 
 ## Features
 
