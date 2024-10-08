@@ -154,13 +154,118 @@ Generators: +ZI, +IZ
 
 ## Examples
 
-### Evolving with Random Cliffords
+### Creating and Multiplying Pauli Operators
+
+```python
+import ccl
+
+# Create Pauli operators
+pauli_x = ccl.Pauli.from_pystr('X')
+pauli_z = ccl.Pauli.from_pystr('Z')
+
+# Multiply Pauli operators
+pauli_y = pauli_x.multiply(pauli_z)
+
+print(f"X * Z = {pauli_y}")  # Expected output: -iY
+```
+
+### Conjugating a Random Pauli Operator with a Random Clifford
+
+```python
+import ccl
+
+n = 4
+
+# Create a random Clifford operation
+C = ccl.Clifford.random_clifford(n)
+
+# Create a random Pauli
+P = ccl.Pauli.random_pauli(n)
+
+# Conjugate random Pauli with random Clifford
+P_conj = P.conjugate(C)
+
+print(f"Conjugated Pauli: {P_conj}")  # Expected output: +X
+```
 
 ### Measuring a Stabilizer State
 
-### Getting Probabilities of a Stabilizer State
+```python
+import ccl
+
+n = 2
+
+# Create a random Clifford operation
+C = ccl.Clifford.random_clifford(n)
+
+# Create a zero stabilizer state and evolve it
+stabilizer_state = ccl.StabilizerState.zero_state(n)
+stabilizer_state = stabilizer_state.evolve(C)
+
+# Measure the stabilizer state
+bitstring, post_measure_state = stabilizer_state.measure()
+
+print(f"Measurement result: {bitstring}")
+print("Post-measurement StabilizerState:")
+print(post_measure_state)
+```
+
+### Getting Outcome Probabilities of a Stabilizer State
+
+```python
+import ccl
+
+# Initialize a Clifford circuit with 2 qubits
+circuit = ccl.CliffordCircuit(num_qubits=2)
+
+# Apply gates to create a Bell state
+circuit.h(0)
+circuit.cx(0, 1)
+
+# Compile the circuit and evolve the stabilizer state
+compiled_clifford = circuit.compile()
+stabilizer_state = ccl.StabilizerState.zero_state(2)
+evolved_state = stabilizer_state.evolve(compiled_clifford)
+
+# Get probabilities of different outcomes
+prob_00 = evolved_state.get_probability('00')
+prob_01 = evolved_state.get_probability('01')
+prob_10 = evolved_state.get_probability('10')
+prob_11 = evolved_state.get_probability('11')
+
+print(f"Probability of '00': {prob_00}")
+print(f"Probability of '01': {prob_01}")
+print(f"Probability of '10': {prob_10}")
+print(f"Probability of '11': {prob_11}")
+```
 
 ### Building a Clifford Circuit
+
+```python
+import ccl
+
+# Initialize a Clifford circuit with 2 qubits
+circuit = ccl.CliffordCircuit(num_qubits=2)
+
+# Apply gates to create a Bell state
+circuit.h(0)
+circuit.cx(0, 1)
+
+# Compile the circuit and evolve the stabilizer state
+compiled_clifford = circuit.compile()
+stabilizer_state = ccl.StabilizerState.zero_state(2)
+evolved_state = stabilizer_state.evolve(compiled_clifford)
+
+# Measure the state multiple times
+counts = {'00': 0, '11': 0}
+num_measurements = 1000
+for _ in range(num_measurements):
+    bitstring, _ = evolved_state.measure()
+    if bitstring in counts:
+        counts[bitstring] += 1
+
+print(f"Measurement counts: {counts}")
+```
 
 ## License
 
