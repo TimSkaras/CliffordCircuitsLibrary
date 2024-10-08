@@ -113,7 +113,7 @@ Suppose we are trying to create a Clifford object to represent the circuit XH, i
 | X      | -Z       |
 | Z      |  X     |
 
-which in smolin terms means X (the vector [1,0]) gets mapped to -Z (the vector [0,1] and a sign of -1) and Z (the vector [0,1]) gets mapped to X (the vector [1,0]). The matrix specifying this linear transformation is just
+which in smolin terms means X (the vector [1,0]) gets mapped to -Z (the vector [0,1] and a sign of -1) and Z (the vector [0,1]) gets mapped to X (the vector [1,0]). In Smolin convention, the first column tells us how $X_1$ transforms, the second column how $Z_1$ transforms, the third column how $X_2$ transforms, and so on. The matrix specifying this linear transformation is just
 
 $$
 \begin{bmatrix}
