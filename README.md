@@ -115,12 +115,10 @@ Suppose we are trying to create a Clifford object to represent the circuit $U=XH
 
 which in smolin terms means X (the vector [1,0]) gets mapped to -Z (the vector [0,1] and a sign of -1) and Z (the vector [0,1]) gets mapped to X (the vector [1,0]). In Smolin convention, the first column tells us how $X_1$ transforms, the second column how $Z_1$ transforms, the third column how $X_2$ transforms, and so on. The matrix specifying this linear transformation is just
 
-$$
-\begin{bmatrix}
-0 & 1 \\
-1 & 0
-\end{bmatrix}.
-$$
+```python
+0   1
+1   0
+```
 
 You can check this is correct by taking a smolin vector as a column and multiplying this matrix on the left. What about the sign though? The symplectic matrix does not track the signs, so we have to keep track of those in a separate array. In this case, X need a sign flip, so our entire Clifford can be represented
 
