@@ -125,12 +125,12 @@ $$
 You can check this is correct by taking a smolin vector as a column and multiplying this matrix on the left. What about the sign though? The symplectic matrix does not track the signs, so we have to keep track of those in a separate array. In this case, X need a sign flip, so our entire Clifford can be represented
 
 $$
-\begin{array}{cc}
+\begin{bmatrix}
 0 & 1 \\
-1 & 0 \\
-\hline
 1 & 0
-\end{array}
+\end{bmatrix}.
+\hline
+1 \quad 0
 $$
 
 
