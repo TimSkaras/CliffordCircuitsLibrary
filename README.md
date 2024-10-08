@@ -22,6 +22,24 @@ This library provides a framework for simulating quantum circuits that are compo
 
 ## Installation
 
+To use the Clifford Circuits Library, you need to include the `ccl.py` file in your project directory or ensure that Python can find it by adjusting the `PYTHONPATH` environment variable.
+
+### Option 1: Place `ccl.py` in Your Project Directory
+
+Copy the `ccl.py file` into the same directory as your Python script. You can then import the ccl module directly.
+
+```python
+import ccl
+```
+
+### Option 2: Modify `PYTHONPATH`
+
+If you prefer to keep `ccl.py` in a separate directory, you can modify the `PYTHONPATH` environment variable to include the directory containing `ccl.py`.
+
+```cmd
+set PYTHONPATH=%PYTHONPATH%;C:\path\to\CliffordCircuitsLibrary
+```
+
 ## Getting Started
 
 ### Creating Pauli Objects
