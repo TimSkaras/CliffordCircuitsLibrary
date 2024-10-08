@@ -46,7 +46,7 @@ set PYTHONPATH=%PYTHONPATH%;C:\path\to\CliffordCircuitsLibrary
 export PYTHONPATH="${PYTHONPATH}:/path/to/CliffordCircuitsLibrary"
 ```
 
-Then you can import ccl as you would a normal python package
+Then you can import `ccl` as you would a normal Python package
 
 ```python
 import ccl
@@ -56,10 +56,10 @@ import ccl
 
 ### Creating Pauli Objects
 
-You can create Pauli operators using the `Pauli` class. Pauli operators are represented using an array of bits in smolin format. You can create `Pauli` objects by specifying its smolin vector or python string.
+You can create Pauli operators using the `Pauli` class. Pauli operators are represented using an array of bits in Smolin format. You can create `Pauli` objects by specifying its Smolin vector or Python string.
 
 #### Smolin Vector
- The most direct method for creating a `Pauli` object is to initialize one with its smolin vector format. 
+ The most direct method for creating a `Pauli` object is to initialize one with its Smolin vector format. 
 
  | Smolin Vector | Pauli |
 |-------------|-------------|
@@ -78,7 +78,7 @@ pauli_XZ = ccl.Pauli([1,0,0,1])
 
 #### Python String
 
-For something less arcane, you can create a Pauli object by specifying its python string directly.
+For something less arcane, you can create a Pauli object by specifying its Python string directly.
 
 ```python
 import ccl
@@ -94,7 +94,7 @@ Clifford operations can be created using the `Clifford` class. You can create a 
 ```python
 import ccl
 
-# Create a Clifford object (identity operation in this case)
+# Create a Clifford object
 n = 1  # Number of qubits
 cliff_idx = 3  # Index in the symplectic group
 sign_idx = 3
@@ -104,7 +104,7 @@ print("Clifford representation:")
 print(clifford)
 ```
 
-The clifford index specifies the symplectic matrix of the clifford unitary. This matrix specifies how each Pauli gets mapped when conjugated by the Clifford. It does not specify the sign that each Pauli would pick up, however. The sign is specified in the sign index, which when converted to a bit string of length 2n, tells you whether each Pauli gets a minus sign or not. It is easier to understand with an example.
+The Clifford index specifies the symplectic matrix of the clifford unitary. This matrix specifies how each Pauli gets mapped when conjugated by the Clifford. It does not specify the sign that each Pauli would pick up, however. The sign is specified in the sign index, which when converted to a bit string of length 2n, tells you whether each Pauli gets a minus sign or not. It is easier to understand with an example.
 
 Suppose we are trying to create a Clifford object to represent the circuit $U=XH$, i.e., the circuit applies a hadamard gate and then an X gate. What are the symplectic matrix and sign array for this Clifford? The symplectic matrix is determined by the action of the clifford on X and Z. We have the following relationship
 
@@ -113,14 +113,14 @@ Suppose we are trying to create a Clifford object to represent the circuit $U=XH
 | X      | -Z       |
 | Z      |  X     |
 
-which in smolin terms means X (the vector [1,0]) gets mapped to -Z (the vector [0,1] and a sign of -1) and Z (the vector [0,1]) gets mapped to X (the vector [1,0]). In Smolin convention, the first column tells us how $X_1$ transforms, the second column how $Z_1$ transforms, the third column how $X_2$ transforms, and so on. The matrix specifying this linear transformation is just
+which in Smolin terms means X (the vector [1,0]) gets mapped to -Z (the vector [0,1] and a sign of -1) and Z (the vector [0,1]) gets mapped to X (the vector [1,0]). In Smolin convention, the first column tells us how $X_1$ transforms, the second column how $Z_1$ transforms, the third column how $X_2$ transforms, and so on. The matrix specifying this linear transformation is just
 
 ```python
 0   1
 1   0
 ```
 
-You can check this is correct by taking a smolin vector as a column and multiplying this matrix on the left. What about the sign though? The symplectic matrix does not track the signs, so we have to keep track of those in a separate array. In this case, X needs a sign flip, so our entire Clifford can be represented
+You can check this is correct by taking a Smolin vector as a column and multiplying this matrix on the left. What about the sign though? The symplectic matrix does not track the signs, so we have to keep track of those in a separate array. In this case, X needs a sign flip, so our entire Clifford can be represented
 
 ```python
 0   1
@@ -133,7 +133,7 @@ From this work, the sign index should be the base 10 integer representation of [
 
 ### Creating Stabilizer States
 
-Stabilizer states can be created using the `StabilizerState` class. You can start with the zero state or define your own stabilizers. To define your own stabilizer based on the generators, you will need to also specify the destabilizers (we are working on fixing this).
+Stabilizer states can be created using the `StabilizerState` class. You can start with the zero state or define your own stabilizers. To define your own stabilizer based on the generators, you will also need to specify the destabilizers (we are working on fixing this).
 
 ```python
 import ccl
