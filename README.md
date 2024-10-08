@@ -89,6 +89,44 @@ pauli_IIZ = ccl.Pauli.from_pystr("IIZ")
 
 ### Creating Clifford Objects
 
+Clifford operations can be created using the `Clifford` class. You can create a Clifford object by specifying its index in the symplectic group or by providing a symplectic matrix directly.
+
+```python
+import ccl
+
+# Create a Clifford object (identity operation in this case)
+n = 1  # Number of qubits
+cliff_idx = 3  # Index in the symplectic group
+sign_idx = 3
+clifford = ccl.Clifford(cliff_idx, sign_idx, n)
+
+print("Clifford representation:")
+print(clifford)
+```
+
+The clifford index specifies the symplectic matrix of the clifford unitary. This matrix specifies how each Pauli gets mapped when conjugated by the Clifford. It does not specify the sign that each Pauli would pick up, however. The sign is specified in the sign index, which when converted to a bit string of length 2n, tells you whether each Pauli gets a minus sign or not. It is easier to understand with an example.
+
+Suppose we are trying to create a Clifford object to represent the circuit XH, i.e., the circuit applies a hadamard gate and then an X gate. What are the symplectic matrix and sign array for this Clifford? The symplectic matrix is determined by the action of the clifford on X and Z. We have the following relationship
+
+ | P | $UPU^\dagger$ |
+|-------------|-------------|
+| X      | -Z       |
+| Z      |  X     |
+
+which in smolin terms means X (the vector [1,0]) gets mapped to -Z (the vector [0,1] and a sign of -1) and Z (the vector [0,1]) gets mapped to X (the vector [1,0]). The matrix specifying this linear transformation is just
+
+$$
+\begin{bmatrix}
+0 & 1 \\
+1 & 0
+\end{bmatrix}.
+$$
+
+You can check this is correct by taking a smolin vector as a column and multiplying this matrix on the left. What about the sign though? The symplectic matrix does not track the signs, so we have to keep track of those in a separate array. In this case, X need a sign flip, so our entire Clifford can be represented
+
+
+
+
 ### Creating Stabilizer States
 
 ## Examples
