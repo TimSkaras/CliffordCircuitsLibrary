@@ -41,6 +41,11 @@ If you prefer to keep `ccl.py` in a separate directory, you can modify the `PYTH
 set PYTHONPATH=%PYTHONPATH%;C:\path\to\CliffordCircuitsLibrary
 ```
 
+#### On Unix/Linux or Windows PowerShell:
+```bash
+export PYTHONPATH="${PYTHONPATH}:/path/to/CliffordCircuitsLibrary"
+```
+
 Then you can import ccl as you would a normal python package
 
 ```python
