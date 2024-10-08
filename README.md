@@ -52,10 +52,40 @@ Then you can import ccl as you would a normal python package
 import ccl
 ```
 
-
 ## Getting Started
 
 ### Creating Pauli Objects
+
+You can create Pauli operators using the `Pauli` class. Pauli operators are represented using vectors of bits in smolin format. You can create `Pauli` objects by specifying its smolin vector or python string.
+
+#### Smolin Vector
+ The most direct method for creating a `Pauli` object is to initialize one with its smolin vector format. 
+
+ | Smolin Vector | Pauli |
+|-------------|-------------|
+| [0,0]      | I       |
+| [0,1]   | Z        |
+| [1,0]   | X        |
+| [1,1]   | Y        |
+
+
+
+
+```python
+import ccl
+
+# Create Pauli operators from string representation
+pauli_x = ccl.Pauli.from_pystr('X')
+pauli_y = ccl.Pauli.from_pystr('Y')
+pauli_z = ccl.Pauli.from_pystr('Z')
+pauli_i = ccl.Pauli.from_pystr('I')
+
+print(f"Pauli X: {pauli_x}")
+print(f"Pauli Y: {pauli_y}")
+print(f"Pauli Z: {pauli_z}")
+print(f"Pauli I: {pauli_i}")
+```
+
 
 ### Creating Clifford Objects
 

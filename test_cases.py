@@ -1,7 +1,7 @@
 import numpy as np
 import random
 import copy
-from CliffordCircuitsLibrary import ccl  # Replace 'ccl' with the actual module name if different
+import ccl  # Replace 'ccl' with the actual module name if different
 
 def test_clifford_class():
     """
