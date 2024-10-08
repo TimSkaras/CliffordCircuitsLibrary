@@ -36,6 +36,7 @@ import ccl
 
 If you prefer to keep `ccl.py` in a separate directory, you can modify the `PYTHONPATH` environment variable to include the directory containing `ccl.py`.
 
+#### On Windows (Command Prompt):
 ```cmd
 set PYTHONPATH=%PYTHONPATH%;C:\path\to\CliffordCircuitsLibrary
 ```
