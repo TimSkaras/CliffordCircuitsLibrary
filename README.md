@@ -185,7 +185,8 @@ P = ccl.Pauli.random_pauli(n)
 # Conjugate random Pauli with random Clifford
 P_conj = P.conjugate(C)
 
-print(f"Conjugated Pauli: {P_conj}")  # Expected output: +X
+print(f"Original Pauli: {P}") 
+print(f"Conjugated Pauli: {P_conj}") 
 ```
 
 ### Measuring a Stabilizer State
