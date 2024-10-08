@@ -120,7 +120,7 @@ which in smolin terms means X (the vector [1,0]) gets mapped to -Z (the vector [
 1   0
 ```
 
-You can check this is correct by taking a smolin vector as a column and multiplying this matrix on the left. What about the sign though? The symplectic matrix does not track the signs, so we have to keep track of those in a separate array. In this case, X need a sign flip, so our entire Clifford can be represented
+You can check this is correct by taking a smolin vector as a column and multiplying this matrix on the left. What about the sign though? The symplectic matrix does not track the signs, so we have to keep track of those in a separate array. In this case, X needs a sign flip, so our entire Clifford can be represented
 
 ```python
 0   1
@@ -129,9 +129,28 @@ You can check this is correct by taking a smolin vector as a column and multiply
 1   0
 ```
 
-
+From this work, the sign index should be the base 10 integer representation of [1,0], which is 2.
 
 ### Creating Stabilizer States
+
+Stabilizer states can be created using the `StabilizerState` class. You can start with the zero state or define your own stabilizers. To define your own stabilizer based on the generators, you will need to also specify the destabilizers (we are working on fixing this).
+
+```python
+import ccl
+
+# Create a zero stabilizer state with n qubits
+n = 2
+stabilizer_state = ccl.StabilizerState.zero_state(n)
+
+print("StabilizerState representation:")
+print(stabilizer_state)
+```
+
+#### Output
+```python
+Destabilizers: +XI, +IX
+Generators: +ZI, +IZ
+```
 
 ## Examples
 
