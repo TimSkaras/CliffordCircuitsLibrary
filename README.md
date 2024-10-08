@@ -106,7 +106,7 @@ print(clifford)
 
 The clifford index specifies the symplectic matrix of the clifford unitary. This matrix specifies how each Pauli gets mapped when conjugated by the Clifford. It does not specify the sign that each Pauli would pick up, however. The sign is specified in the sign index, which when converted to a bit string of length 2n, tells you whether each Pauli gets a minus sign or not. It is easier to understand with an example.
 
-Suppose we are trying to create a Clifford object to represent the circuit XH, i.e., the circuit applies a hadamard gate and then an X gate. What are the symplectic matrix and sign array for this Clifford? The symplectic matrix is determined by the action of the clifford on X and Z. We have the following relationship
+Suppose we are trying to create a Clifford object to represent the circuit $U=XH$, i.e., the circuit applies a hadamard gate and then an X gate. What are the symplectic matrix and sign array for this Clifford? The symplectic matrix is determined by the action of the clifford on X and Z. We have the following relationship
 
  | P | $UPU^\dagger$ |
 |-------------|-------------|
