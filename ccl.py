@@ -1,7 +1,3 @@
-# canonical ordering of symplectic group elements
-# from "How to efficiently select an arbitrary clifford group element"
-#       by Robert Koenig and John A. Smolin
-#
 
 import numpy as np
 import math
@@ -11,6 +7,11 @@ import random, copy, itertools
 import qiskit.quantum_info as qisq
 
 ########### Smolin Code Begin #############
+# canonical ordering of symplectic group elements
+# The code in this section is from
+# "How to efficiently select an arbitrary clifford group element"
+#       by Robert Koenig and John A. Smolin
+#
 
 def directsum(m1,m2):
     n1=len(m1[0])
