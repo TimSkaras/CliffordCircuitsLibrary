@@ -1,0 +1,2 @@
+1) Write more and better test cases
+2) Fix Clifford inverse -- it currently does not account for inverting sign changes as well

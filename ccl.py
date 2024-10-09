@@ -35,7 +35,10 @@ def inner(v,w):  # symplectic inner product
 def transvection(k,v): # applies transvection Z_k to v
     return (v+inner(k,v)*k)%2
 
-def int2bits(i,n):  # converts integer i to an length n array of bits
+def int2bits(i,n):  
+    # converts integer i to an length n array of bits
+    # rightmost bit is the most significant bit
+    # This is the opposite convention used in the simulator part of code
     output=np.zeros(n,dtype=np.int8)
     for j in range(0,n):
         output[j]=i&1
@@ -163,7 +166,9 @@ def symplectic(i,n): # output symplectic canonical matrix i of size 2nX2n
     return g
     ############# end symplectic
 
-def bits2int(b,nn):  # converts an nn-bit string b to an integer between 0 and 2^n-1
+def bits2int(b,nn):  
+    # converts an nn-bit string b to an integer between 0 and 2^n-1
+    # Assumes right most bit is most significant
     output=0
     tmp=1
     for j in range(0,nn):
@@ -174,12 +179,6 @@ def bits2int(b,nn):  # converts an nn-bit string b to an integer between 0 and 2
 
 def numberofcosets(n): # returns  the number of different cosets
     x=int(np.power(2,2*n-1))*int(np.power(2,2*n)-1)
-    return x;
-
-def numberofsymplectic(n): # returns the number of symplectic group elements
-    x=1;
-    for j in range(1,n+1):
-        x=x*numberofcosets(j);
     return x;
 
 ################################################################################
@@ -350,57 +349,6 @@ def expToPauli(exp1, exp2):
         return 2
     else:
         print("invalid input")
-
-def get_basis_vecs(symp):
-    """
-    Compute 2n x n matrix that describes how each X_i (first n rows) and each Z_i (second set of n rows)
-    maps under the clifford circuit in symp
-
-    Note: X1 corresponds to XI on n=2, X2 is IX and so on
-    Indexing starts from left and specifies each stabilizer generator in base 4: I, X, Y, Z
-    """
-
-    # Num qubits
-    n = len(symp)//2
-
-    alpha = np.zeros([n, n], dtype=int)
-    beta = np.zeros([n, n], dtype=int)
-    gamma = np.zeros([n, n], dtype=int)
-    delta = np.zeros([n, n], dtype=int)
-
-    for i in range(2*n):
-        for j in range(2*n):
-
-            if (i+1) % 2 == 1:
-                if (j+1) % 2 == 1:
-                    alpha[i//2, j//2] = symp[i,j]
-                else:
-                    beta[i//2, j//2] = symp[i,j]
-            else:
-                if (j+1) %2 == 1:
-                    gamma[i//2 , j//2] = symp[i,j]
-                else:
-                    delta[i//2 ,j//2] = symp[i,j]
-
-    basis_vecs = np.zeros([2*n, n], dtype = int)
-
-    for i in range(2*n):
-
-        vec = np.zeros(n, dtype=int)
-
-        for j in range(n):
-            # X basis vectors
-            if i < n:
-                vec[j] = expToPauli(alpha[i, j], beta[i,j])
-
-            # Z basis vectors
-            else:
-                vec[j] = expToPauli(gamma[i-n,j], delta[i-n,j])
-
-        basis_vecs[i, :] = vec
-
-
-    return basis_vecs
 
 def num_clifford_circuits(n):
     # Number of clifford circuits on n qubits modulo pauli gates

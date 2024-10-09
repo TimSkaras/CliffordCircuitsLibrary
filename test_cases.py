@@ -3,6 +3,7 @@ import random
 import copy
 import ccl
 
+
 def test_clifford_class():
     """
     Test the ccl.Clifford class methods.
@@ -161,7 +162,6 @@ def test_stabilizer_state_class():
     
     print("All tests for ccl.StabilizerState class passed.\n")
 
-
 def test_clifford_circuit():
     """
     Test various functionalities of the ccl.CliffordCircuit class and related classes.
@@ -304,3 +304,4 @@ if __name__ == "__main__":
     test_pauli_class()
     test_stabilizer_state_class()
     test_clifford_circuit()
+
