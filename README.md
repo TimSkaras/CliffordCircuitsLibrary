@@ -1,6 +1,8 @@
 # Clifford Circuits Library
 Welcome to the Clifford Circuits Library! This library provides classes and methods for simulating Clifford circuits, stabilizer states, and Pauli operators using symplectic matrices. It's designed for quantum computing simulations involving Clifford operations, stabilizer states, and Pauli measurements.
 
+Note that this repository uses code from "How to efficiently select an arbitrary clifford group element" by Robert Koenig and John A. Smolin to randomly sample Clifford unitaries. The code used from their paper has been clearly delineated in the ccl.py file. 
+
 ## Table of Contents
 
 - [Introduction](#introduction)
