@@ -273,7 +273,7 @@ print(f"Measurement counts: {counts}")
 
 ## What this code cannot do (yet)
 
-We believe this library can do the vast majority of tasks you might be interested in doing when working with Clifford circuits. Nonetheless, there are handful we have not covered. One of them is initializing a stabilizer state with manual entry of the generators. Our code supports doing this but only if you also provide the destabilizers as well. Eventually, we would like the code to compute the destabilizers for you, but for now you must provide them. 
+We believe this library can do the vast majority of tasks you might be interested in doing when working with Clifford circuits. Nonetheless, it cannot do everything. It might give you trouble if you are initializing a stabilizer state with manual entry of the generators. Our code supports doing this but only if you also provide the destabilizers as well. Eventually, we would like the code to compute the destabilizers for you, but for now you must provide them. 
 
 Another feature we have not implemented is an inverse method for the Clifford class. This method would return another Clifford object that is the inverse unitary of the original Clifford object. Because we are not storing Cliffords as dxd unitary matrices (this would have exponential space complexity), inverting Clifford unitaries is far less trivial. We hope to add this in the near future to make our code as useful as possible.
 
