@@ -1,4 +1,0 @@
-1) Write more and better test cases
-2) Add in inverse method for  clifford circuits
-3) Add code for finding destabilizers
-4) efficient method for getting all the probabilities of stabilizer state
