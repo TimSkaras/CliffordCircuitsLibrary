@@ -9,7 +9,7 @@ Note that this repository uses code from "How to efficiently select an arbitrary
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Examples](#examples)
-- [Future Work](#future-work)
+- [Future Work](#what-this-code-cannot-do-yet)
 - [License](#license)
 
 ## Introduction
