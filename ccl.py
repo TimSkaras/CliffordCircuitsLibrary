@@ -365,7 +365,7 @@ def num_clifford_circuits(n):
 
 def row_sum(row1, row2):
     """
-    Sums two rows in aaronson format. Note this is equivalent to multiplying to Pauli strings
+    Sums two rows in aaronson format. Note this is equivalent to multiplying two Pauli strings
     so additional logic must be done to make sure the right sign is computed
 
     If there are n qubits, there should be 2*n + 1 elements in each row (last element is for the sign)
@@ -388,27 +388,6 @@ def row_sum(row1, row2):
     out[-1] = G//2
 
     return out
-
-def inverse(A):
-    """
-    Finds inverse of symplectic matrix A with binary finite field
-
-    """
-    n = len(A)//2
-
-    # Create matrix [A | I]
-    augmented_A = np.zeros([2*n, 4*n+1], dtype=int)
-    augmented_A[:,:2*n] = A
-    for i in range(2*n): augmented_A[i, 2*n+i] = 1
-    augmented_rref = rref(augmented_A)
-
-    # Use Gaussian elimination on reduced rows
-    for i in range(2*n):
-        for j in range(i):
-            if augmented_rref[j,i] == 1:
-                augmented_rref[j,:] = (augmented_rref[j,:] + augmented_rref[i,:]) % 2
-
-    return augmented_rref[:,2*n:-1]
 
 def rref(A):
     """
@@ -519,17 +498,6 @@ class Clifford:
         sign_idx = random.randint(0, 4**n -1)
 
         return Clifford(cliff_idx, sign_idx, n)
-
-    def inverse(self):
-        """
-        Outputs ccl Clifford object that is the inverse unitary of self
-        """
-
-        s = inverse(self.s)
-        cliff_idx = symplecticinverse(self.num_qubits, np.transpose(s))
-        sign_idx = self.sign_idx
-
-        return Clifford(cliff_idx, sign_idx, self.num_qubits, s)
 
 class Pauli:
 
@@ -729,7 +697,7 @@ class StabilizerState:
             destabs = copy.deepcopy(destabilizers)
             self.destabilizers = destabs
         else:
-            print("Destabilizers must be provided. Code for finding destabilizers is broken")
+            print("Destabilizers must be provided. Code for finding destabilizers is broken")   
             self.destabilizers = self.get_destabilizers(self.generators)
 
 
@@ -739,7 +707,6 @@ class StabilizerState:
         destabs_str = ', '.join([str(paul) for paul in self.destabilizers])
         gens_str = ', '.join([str(paul) for paul in self.generators])
         return f"Destabilizers: {destabs_str}\nGenerators: {gens_str}"
-
 
     @classmethod
     def zero_state(cls, n):
@@ -754,48 +721,6 @@ class StabilizerState:
         generators = [Pauli(smolin_arr[:,i]) for i in range(n)]
         destabilizers = [Pauli(destabs_arr[:,i]) for i in range(n)]
         return StabilizerState(None, generators=generators, destabilizers=destabilizers)
-
-    @classmethod
-    def get_destabilizers(cls, generators):
-        """
-        TODO: Fix this code. It produces destabilizers that destabilize more than one generator and are not mutually commuting
-
-        Finds destabilizers for given generators
-
-        INPUTS:
-        generators -- array of mutually commuting Pauli objects
-
-        OUTPUTS:
-        array of Pauli objects that are detabilizers for generators
-        """
-
-        n = generators[0].num_qubits
-        smolin_arr = np.zeros([n, 2*n], dtype=int)
-        destabilizers = []
-
-        for i in range(n):
-            # Generate random Pauli
-            h = Pauli(np.random.randint(0,2, 2*n))
-
-            # Keep generating Paulis until we find one that
-            # anticommutes with exactly one
-            while generators[i].commutes(h) or not 1 in h.smolin_vec: 
-                h = Pauli(np.random.randint(0,2, 2*n))
-
-                # make sure it commutes with previous destabs and generators
-                for j in range(len(destabilizers)):
-                    if not destabilizers[j].commutes(h): h = h.multiply(generators[i])
-                    if not generators[j].commutes(h): h = h.multiply(destabilizers[j])
-
-            destabilizers.append(h)
-
-        # # Check that destabilizers commute with exactly one generator
-        for i in range(n-2,-1, -1):
-            # for j in range(i+1,n):
-                # if not destabilizers[i].commutes(generators[j]): destabilizers[i] = destabilizers[i].multiply(destabilizers[j])
-            destabilizers[i].exp = 0
-
-        return destabilizers
 
     def get_tableau(self):
         """

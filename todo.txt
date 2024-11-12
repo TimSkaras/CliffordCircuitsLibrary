@@ -1,3 +1,4 @@
 1) Write more and better test cases
-2) Fix Clifford inverse -- it currently does not account for inverting sign changes as well
-3) Fix code for finding destabilizers
+2) Add in inverse method for  clifford circuits
+3) Add code for finding destabilizers
+4) efficient method for getting all the probabilities of stabilizer state

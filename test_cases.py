@@ -2,6 +2,7 @@ import numpy as np
 import random
 import copy
 import ccl
+from collections import Counter
 
 
 def test_clifford_class():
@@ -12,39 +13,12 @@ def test_clifford_class():
     
     # Test 1: Create a Clifford object and test __init__ and __repr__
     print("Test 1: Create a Clifford object and test __repr__")
-    n = 1
-    cliff_idx = 0  # Use a known index
-    sign_idx = 0
-    clifford = ccl.Clifford(cliff_idx, sign_idx, n)
+    n = 3
+    clifford = ccl.Clifford.random_clifford(n)
     print("Clifford representation:")
     print(clifford)
     print("Passed")
-    
-    # Test 2: Test the inverse method
-    print("Test 2: Test the inverse method")
-    inverse_clifford = clifford.inverse()
-    print("Inverse Clifford representation:")
-    print(inverse_clifford)
-    # Test if the inverse of the inverse is the original
-    inverse_of_inverse = inverse_clifford.inverse()
-    assert np.array_equal(clifford.s, inverse_of_inverse.s), "Inverse of inverse does not match original"
-    assert np.array_equal(clifford.r, inverse_of_inverse.r), "Inverse of inverse r does not match original"
-    print("Passed")
-    
-    # Test 3: Test composition with its inverse (should be identity)
-    print("Test 3: Test composition with its inverse")
-    # Prepare a stabilizer state
-    stab_state = ccl.StabilizerState.zero_state(n)
-    # Evolve with the Clifford
-    evolved_state = stab_state.evolve(clifford)
-    # Evolve with the inverse
-    recovered_state = evolved_state.evolve(inverse_clifford)
-    # Check if the recovered state matches the original state
-    for gen1, gen2 in zip(stab_state.generators, recovered_state.generators):
-        assert np.array_equal(gen1.smolin_vec, gen2.smolin_vec), "Recovered generators do not match original"
-        assert gen1.exp == gen2.exp, "Recovered generator exponents do not match original"
-    print("Passed")
-    
+
     print("All tests for ccl.Clifford class passed.\n")
 
 def test_pauli_class():
@@ -78,18 +52,8 @@ def test_pauli_class():
     assert str(result) == 'iY', f"Expected iY, got {result}"
     print("Passed")
     
-    # Test 3: Test commutes method
-    print("Test 3: Test commutes method")
-    # X and Y do not commute
-    assert not pauli_x.commutes(pauli_y), "X and Y should not commute"
-    # X and I do commute
-    assert pauli_x.commutes(pauli_i), "X and I should commute"
-    # Z and Z do commute
-    assert pauli_z.commutes(pauli_z), "Z and Z should commute"
-    print("Passed")
-    
-    # Test 4: Test conjugate method
-    print("Test 4: Test conjugate method")
+    # Test 3: Test conjugate method
+    print("Test 3: Test conjugate method")
     # Conjugate Pauli X by Hadamard (H X H = Z)
     circuit = ccl.CliffordCircuit(1)
     circuit.h(0)
@@ -98,6 +62,21 @@ def test_pauli_class():
     conjugated_pauli = pauli_x.conjugate(clifford)
     assert str(conjugated_pauli) == '+Z', f"Expected +Z, got {conjugated_pauli}"
     print("Passed")
+
+    # Test 4: Test commutes method
+    print("Test 4: Test commutes method")
+
+    XYYZ = ccl.Pauli.from_pystr("XYYZ")
+    XIIX = ccl.Pauli.from_pystr("XIIX")
+    ZZZZ = ccl.Pauli.from_pystr("ZZZZ")
+    ZIII = ccl.Pauli.from_pystr("ZIII")
+
+    assert not XYYZ.commutes(ZIII), "XYYZ and ZIII should not commute"
+    assert ZIII.commutes(ZZZZ), "ZIII and ZZZZ should commute"
+    assert ZZZZ.commutes(XIIX), "ZZZZ and XIIX should commute"
+    assert not XYYZ.commutes(ZZZZ), "XYYZ and ZZZZ should not commute"
+    print("Passed")
+    
     
     print("All tests for ccl.Pauli class passed.\n")
 
@@ -109,7 +88,7 @@ def test_stabilizer_state_class():
     
     # Test 1: Initialize StabilizerState and test __repr__
     print("Test 1: Initialize StabilizerState and test __repr__")
-    n = 1
+    n = 3
     stabilizer_state = ccl.StabilizerState.zero_state(n)
     print("StabilizerState representation:")
     print(stabilizer_state)
@@ -118,7 +97,9 @@ def test_stabilizer_state_class():
     # Test 2: Test get_tableau method
     print("Test 2: Test get_tableau method")
     tableau = stabilizer_state.get_tableau()
-    expected_tableau = np.array([[0, 1, 0]])  # For |0⟩ state, Z stabilizer
+    expected_tableau = np.array([[0, 0, 0, 1, 0, 0, 0],
+                                 [0, 0, 0, 0, 1, 0, 0],
+                                 [0, 0, 0, 0, 0, 1, 0]])
     assert np.array_equal(tableau, expected_tableau), f"Expected tableau {expected_tableau}, got {tableau}"
     print("Passed")
     
@@ -127,37 +108,73 @@ def test_stabilizer_state_class():
     # Evolve the stabilizer state with Hadamard gate
     circuit = ccl.CliffordCircuit(n)
     circuit.h(0)
+    circuit.h(1)
+    circuit.h(2)
     clifford = circuit.compile()
-    evolved_state = stabilizer_state.evolve(clifford)
-    # Now the stabilizer should be X
-    expected_generator = ccl.Pauli.from_pystr('+X')
-    assert np.array_equal(evolved_state.generators[0].smolin_vec, expected_generator.smolin_vec), "Evolved generator does not match expected"
-    assert evolved_state.generators[0].exp == expected_generator.exp, "Evolved generator exponent does not match expected"
+    evolved_state = ccl.StabilizerState.zero_state(n).evolve(clifford)
+    # Now the stabilizer should be X1, X2, X3
+    expected_generators = [ccl.Pauli.from_pystr('+XII'), ccl.Pauli.from_pystr('+IXI'),ccl.Pauli.from_pystr('+IIX')]
+    for i in range(n):
+        assert np.array_equal(evolved_state.generators[i].smolin_vec, expected_generators[i].smolin_vec), "Evolved generator does not match expected"
+        assert evolved_state.generators[i].exp == expected_generators[i].exp, "Evolved generator exponent does not match expected"
+    print("Passed")
+
+
+    # Now we test a more complicated clifford circuit
+    circuit = ccl.CliffordCircuit(n)
+    circuit.h(0)
+    circuit.cx(0,1)
+    circuit.cx(0,2)
+    circuit.s(0)
+    circuit.s(1)
+    circuit.s(2)
+    clifford = circuit.compile()
+    evolved_state = ccl.StabilizerState.zero_state(n).evolve(clifford)
+    expected_generators = [ccl.Pauli.from_pystr("YYY"),ccl.Pauli.from_pystr("ZZI"),ccl.Pauli.from_pystr("ZIZ")]
+    for i in range(n):
+        assert np.array_equal(evolved_state.generators[i].smolin_vec, expected_generators[i].smolin_vec), "Evolved generator does not match expected"
+        assert evolved_state.generators[i].exp == expected_generators[i].exp, "Evolved generator exponent does not match expected"
     print("Passed")
     
     # Test 4: Test get_probability method
     print("Test 4: Test get_probability method")
-    # For the |+⟩ state, probability of '0' and '1' should be 0.5
-    prob_0 = evolved_state.get_probability('0')
-    prob_1 = evolved_state.get_probability('1')
-    assert abs(prob_0 - 0.5) < 1e-6, f"Probability of '0' is not 0.5, got {prob_0}"
-    assert abs(prob_1 - 0.5) < 1e-6, f"Probability of '1' is not 0.5, got {prob_1}"
+    
+    for _ in range(10):
+        probabilities = [evolved_state.get_probability(ccl.int2basestr(i,2,n)) for i in range(2**n)]
+        probabilities_exp = evolved_state.to_qiskit().probabilities()
+        assert np.array_equal(probabilities, probabilities_exp), f"Outcome probabilities are incorrect"
+
+        evolved_state = evolved_state.evolve(ccl.Clifford.random_clifford(n))
+
     print("Passed")
     
     # Test 5: Test measure method
     print("Test 5: Test measure method")
-    # Measure the |+⟩ state
-    bitstring, post_measure_state = evolved_state.measure()
-    assert bitstring in ['0', '1'], f"Measurement result should be '0' or '1', got {bitstring}"
-    # Check that the post-measurement state is updated correctly
-    if bitstring == '0':
-        # State collapsed to |0⟩
-        expected_generator = ccl.Pauli.from_pystr('+Z')
-    else:
-        # State collapsed to |1⟩
-        expected_generator = ccl.Pauli.from_pystr('-Z')
-    assert np.array_equal(post_measure_state.generators[0].smolin_vec, expected_generator.smolin_vec), "Post-measurement generator does not match expected"
-    assert post_measure_state.generators[0].exp == expected_generator.exp, "Post-measurement generator exponent does not match expected"
+
+    n = 4  # Number of qubits
+    num_measurements = 10000  # Number of measurements to perform
+
+    random_state = ccl.StabilizerState.zero_state(n).evolve(ccl.Clifford.random_clifford(n))
+
+    measurement_results = []
+
+    for _ in range(num_measurements):
+        bitstring, _ = random_state.measure()
+        measurement_results.append(bitstring)
+
+    outcome_counts = Counter(measurement_results)
+
+    expected_probs = {}
+    expected_errors = {}
+    flag = True
+    for i in range(2**n):
+        outcome = "".join(map(str,ccl.int2basestr(i, 2, n)))
+        true_prob = random_state.get_probability(outcome)
+        err = np.sqrt(true_prob * (1-true_prob)/num_measurements)
+        empirical_prob = outcome_counts[outcome]/num_measurements
+
+        assert np.abs(true_prob - empirical_prob) <= 3*err, "Measurement probability error not within 99.7 per cent confidence"
+
     print("Passed")
     
     print("All tests for ccl.StabilizerState class passed.\n")
